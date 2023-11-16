@@ -9,12 +9,17 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
+      strategies: 'injectManifest',
       filename: 'firebase-messaging-sw.js',
       devOptions: {
         enabled: true,
         type: 'module',
       },
+      includeAssets: ['favicon.ico'],
       manifest: {
+        name: 'FCM Playground',
+        short_name: 'FCM',
+        description: 'FCM 테스트해보는 곳',
         theme_color: '#60D4DE',
         icons: [
           {
