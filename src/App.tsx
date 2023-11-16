@@ -1,19 +1,30 @@
-import { useState } from 'react';
+import { getMessaging, getToken } from 'firebase/messaging';
+import firebase from './utils/firebase';
 import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const handlePermission = async () => {
+    const permission = await Notification.requestPermission();
+
+    if (permission === 'granted') {
+      alert('Notification permission granted.');
+    }
+  };
+
+  const handleGetToken = async () => {
+    const message = getMessaging(firebase);
+
+    const token = await getToken(message, {
+      vapidKey: 'BLuDu-U9wEKSpnHSmnRvoIClAUx7z3Xf_sI6TaJqh-9JSPtJ10DR8WQsFTp4dEngWqLviJcJZvXK_vu-SkI2ppg',
+    });
+
+    console.log(token);
+  };
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <button onClick={handlePermission}>Permission 요청</button>
+      <button onClick={handleGetToken}>토큰 GET</button>
     </>
   );
 }
