@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { getFCMToken } from './services/getFCMToken';
+import Debounce from './utils/Debounce';
+import { getFCMToken } from './utils/firebase';
 import './index.css';
 
 const setupFCM = async () => {
+  const debounce = new Debounce();
+
   if (!('permissions' in navigator)) {
     return;
   }
@@ -17,8 +20,10 @@ const setupFCM = async () => {
     }
 
     try {
-      const token = await getFCMToken();
-      console.log(token);
+      debounce.run(async () => {
+        const token = await getFCMToken();
+        console.log(token);
+      }, 1000);
     } catch (err) {
       console.error(err);
     }
